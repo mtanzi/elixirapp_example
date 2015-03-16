@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Framework Testing</title>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-bottom: 300px;
+      }
+      #log {
+        bottom: 0;
+        left: 0;
+        margin-bottom: 0;
+        position: fixed;
+        width: 100%;
+      }
+      #log .panel-heading {
+        border-radius: 0;
+      }
+      #log .panel-body {
+        height: 250px;
+        overflow: auto;
+      }
+      #log pre {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <!--[if lt IE 9]>
+      <script src="http://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <h1>Hello Elixir!</h1>
+      <p>
+        Here a small for to post data on the server using websockets.<br/>
+        It's currently setup to attach to <code>ws://localhost:8080</code>.<br/>
+        We've provided you a logging system as well to help squash them nasty buggy wugs.
+      </p>
+      
+
+      <form id="form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" class="form-control" name="name" value="Marco"/>
+        </div>
+        <div class="form-group">
+          <label for="name">Surname</label>
+          <input type="text" id="name" class="form-control" name="surname" value="Tanzi"/>
+        </div>
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="text" id="age" class="form-control" name="age" value="63"/>
+        </div>
+        <div class="form-group">
+          <label for="bio">Short bio about yourself</label>
+          <textarea id="bio" class="form-control" name="bio" rows="6">I am an American toy consisting of a plastic model of a potato, which can be decorated with a variety of plastic parts that can attach to the main body. These parts usually include ears, eyes, shoes, a hat, a nose, and a mouth. I was invented and developed by George Lerner in 1949, and first manufactured and distributed by Hasbro in 1952. I was the first toy advertised on television and has remained in production since its debut. I was originally produced as separate plastic parts with pushpins that could be stuck into a real potato or other vegetable. However, due to complaints regarding rotting vegetables and new government safety regulations, Hasbro began including a plastic potato body within the toy set in 1964.</textarea>
+        </div>
+        
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary"/>
+        </div>
+      </form>
+
+      <div class="panel panel-default" id="log">
+        <div class="panel-heading">
+          <h2 class="panel-title">Log</h2>
+        </div>
+        <div class="panel-body">
+          <pre></pre>
+        </div>
+      </div>
+
+      </br>
+      <p><small><i class="glyphicon glyphicon-heart"></i> Marco Tanzi</small></p>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+      function log(msg) {
+        document.querySelector('#log pre').textContent += msg + '\n';
+      }
+
+      var ws = new WebSocket('ws://localhost:8080/ws');
+      ws.onopen = function() {
+        log('CONNECT');
+      };
+      ws.onclose = function() {
+        log('DISCONNECT');
+      };
+      ws.onmessage = function(event) {
+        log('MESSAGE: ' + event.data);
+      };
+
+      $('#form').submit(function (e) {
+        e.preventDefault();
+        var name = $('#name').val();
+        var surname = $('#surname').val();
+        var age = $('#age').val();
+        
+        var data = JSON.stringify({
+          name: name,
+          surname: surname,
+          age: age
+        });
+        log('SENDING: ' + data);
+        ws.send(data);
+      });
+
+      // var wsuri;
+      // if (document.location.origin == "file://") {
+      //   wsuri = "ws://127.0.0.1:8080/ws";
+
+      // } else {
+      //   wsuri = (document.location.protocol === "http:" ? "ws:" : "wss:") + "//" +
+      //               document.location.host + "/ws";
+      // }
+
+
+      // the WAMP connection to the Router
+      //
+      // var connection = new autobahn.Connection({
+      //   url: wsuri,
+      //   realm: "realm1"
+      // });
+
+      // console.log(connection);
+
+      // connection.onopen = function (session, details) {
+      //   console.log(session);
+      //   $('#form').submit(function (e) {
+      //     e.preventDefault();
+      //     var name = $('#name').val();
+      //     var age = $('#age').val();
+      //     var bio = $('#bio').val();
+      //     var games = (function () {
+      //       var games = [];
+      //       $('[name="games[]"]:checked').each(function () { games.push($(this).val()); });
+      //       return games;
+      //     }());
+      //     var data = JSON.stringify({
+      //       name: name,
+      //       age: age,
+      //       bio: bio,
+      //       games: games
+      //     });
+      //     log('SENDING: ' + data);
+      //     // ws.send(data);
+      //     session.publish('com.mymedsandme.orient', [data]);
+      //     console.log("published to topic 'com.mymedsandme.form'");
+      //   });
+      // }
+
+
+      // connection.onclose = function (reason, details) {
+      //     console.log("Connection lost: " + reason);
+      //     if (t1) {
+      //        clearInterval(t1);
+      //        t1 = null;
+      //     }
+      //     if (t2) {
+      //        clearInterval(t2);
+      //        t2 = null;
+      //     }
+      //  }
+
+
+       // now actually open the connection
+       //
+       connection.open();
+    </script>
+  </body>
+</html>
