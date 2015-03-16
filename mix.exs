@@ -2,10 +2,13 @@ defmodule ElixirappExample.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :elixirapp_example,
-     version: "0.0.1",
-     elixir: "~> 1.0",
-     deps: deps]
+    [
+      app: :elixirapp_example,
+      version: "0.0.1",
+      elixir: "~> 1.0",
+      deps: deps,
+      test_coverage: [tool: ExCoveralls]
+    ]
   end
 
   # Configuration for the OTP application
@@ -28,8 +31,10 @@ defmodule ElixirappExample.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{ :cowboy, "~> 1.0.0"  },
-     { :exjsx, "~>3.1.0"}
+    [
+      { :cowboy, "~> 1.0.0" },
+      { :exjsx, "~>3.1.0" },
+      { :excoveralls, "~> 0.3", only: [:dev, :test] }
     ]
   end
 end
