@@ -8,7 +8,7 @@ defmodule WebsocketHandler do
   def websocket_init(_TransportName, req, _opts) do
     IO.puts "init. Starting timer. PID is #{inspect(self())}"
 
-    :erlang.start_timer(1000, self(), [])
+    # :erlang.start_timer(1000, self(), [])
     {:ok, req, :undefined_state }
   end
 
@@ -19,7 +19,6 @@ defmodule WebsocketHandler do
   def websocket_handle({:text, content}, req, state) do
     { :ok, message} = JSX.decode(content)
 
-    IO.puts message
     { :ok, reply } = JSX.encode message
     {:reply, {:text, reply}, req, state}
   end
