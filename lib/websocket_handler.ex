@@ -1,5 +1,8 @@
 defmodule WebsocketHandler do
  @behaviour :cowboy_websocket_handler
+  @moduledoc """
+    This module will handle the websockets connections
+  """
 
   def init({tcp, http}, _req, _opts) do
     {:upgrade, :protocol, :cowboy_websocket}

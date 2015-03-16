@@ -1,5 +1,8 @@
 defmodule Server do
   @behaviour :application
+  @moduledoc """
+    This module will handle the server connections using cowboy web server
+  """
 
   def start(_type, _args) do
     port = 8080

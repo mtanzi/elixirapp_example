@@ -1,5 +1,8 @@
 defmodule ServerSup do
   use Supervisor
+  @moduledoc """
+    Supervisor for the web server
+  """
 
   def start_link do
     {:ok, sup} = Supervisor.start_link(__MODULE__, [], name: :supervisor)   
