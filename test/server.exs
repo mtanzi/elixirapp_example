@@ -1,4 +1,4 @@
-defmodule ElixirappExampleTest do
+defmodule ServerTest do
   use ExUnit.Case
 
   test "the truth" do
