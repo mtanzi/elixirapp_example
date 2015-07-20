@@ -2,5 +2,3 @@ ElixirappExample [![Build Status](https://travis-ci.org/mtanzi/elixirapp_example
 ================
 
 Simple web application using with [Elixir](http://elixir-lang.org/), [Cowboy](http://ninenines.eu/docs/en/cowboy/HEAD/guide/introduction/) web server and websockets.
-
-test to trigger the build 
